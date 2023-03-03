@@ -1,6 +1,11 @@
 <div>
     <div class="flex justify-center">
         <div class="w-6/12">
+            @if (session()->has('message'))
+                <div class="border mt-5 p-2 rounded bg-green-500 shadow text-white">
+                    {{ session('message') }}
+                </div>
+            @endif
             <h1 class="my-10 text-3xl">Comments</h1>
             @error('newComment') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
             <form class="my-4 flex" wire:submit.prevent="addComment">
@@ -21,6 +26,7 @@
                     <p>{{ $comment->body }}</p>
                 </div>
             @endforeach
+                {{ $comments->links('pagination::simple-tailwind') }}
         </div>
     </div>
 </div>

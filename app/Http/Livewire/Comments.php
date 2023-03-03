@@ -7,16 +7,13 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Comments extends Component
 {
+    use WithPagination;
     public $newComment = '';
-    public $comments;
-//    Mount
-    public function mount(){
-        $newcomments = Comment::latest()->get();
-        $this->comments = $newcomments;
-    }
+//    public $comments;
 
     public function updated($property)
     {
@@ -44,19 +41,23 @@ class Comments extends Component
         $newComment = $this->newComment;
         $createdComment = Comment::create([
             'body' => $newComment,
-            'user_id' => 1,
+            'user_id' => User::inRandomOrder()->first()->id
         ]);
-        $this->comments->prepend($createdComment);
         $this->newComment = '';
+        session()->flash('message', 'Comment successfully added.');
     }
     public function removeComment($id){
         $comment = Comment::find($id);
         $comment->delete();
-        $this->comments = $this->comments->where('id', '!=', $id);
+//        $this->comments = $this->comments->where('id', '!=', $id);
 //        $this->comments = $this->comments->except($id);
+        session()->flash('message', 'Comment successfully Delete.');
     }
+
     public function render()
     {
-        return view('livewire.comments');
+        return view('livewire.comments',[
+            'comments' => Comment::latest()->paginate(3)
+        ]);
     }
 }
