@@ -49,7 +49,6 @@ class Comments extends Component
         $this->comments->prepend($createdComment);
         $this->newComment = '';
     }
-
     public function removeComment($id){
         $comment = Comment::find($id);
         $comment->delete();
