@@ -26,7 +26,7 @@
                     <p>{{ $comment->body }}</p>
                 </div>
             @endforeach
-                {{ $comments->links('pagination::simple-tailwind') }}
+                {{ $comments->links('pagination-links') }}
         </div>
     </div>
 </div>
