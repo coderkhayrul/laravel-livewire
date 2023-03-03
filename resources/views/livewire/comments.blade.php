@@ -10,14 +10,16 @@
                 </div>
             </form>
             @foreach($comments as $comment)
-            <div class="rounded border shadow p-3 my-2">
-                <div class="flex justify-start my-2">
-                    <p class="font-bold text-lg">{{ $comment->creator->name }}</p>
-                    <p class="text-gray-500 text-sm ml-2">{{ $comment->created_at->diffForHumans() }}</p>
-                    <button class="ml-5 shadow p-1 bg-red-600 text-white rounded">Delete</button>
+                <div class="rounded shadow border my-4 pb-3 pl-2">
+                    <div class="flex justify-between my-2 items-center">
+                        <div class="flex">
+                            <h2 class="font-bold text-lg mr-2">{{ $comment->creator->name }}</h2>
+                            <p class="text-sm">{{ $comment->created_at->diffForHumans() }}</p>
+                        </div>
+                        <i class="fa-solid fa-trash text-white rounded shadow bg-red-700 p-2 mr-2" wire:click="removeComment({{$comment->id}})"></i>
+                    </div>
+                    <p>{{ $comment->body }}</p>
                 </div>
-                <p class="text-gray-600">{{ $comment->body }}</p>
-            </div>
             @endforeach
         </div>
     </div>

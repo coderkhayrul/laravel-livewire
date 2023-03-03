@@ -49,6 +49,13 @@ class Comments extends Component
         $this->comments->prepend($createdComment);
         $this->newComment = '';
     }
+
+    public function removeComment($id){
+        $comment = Comment::find($id);
+        $comment->delete();
+        $this->comments = $this->comments->where('id', '!=', $id);
+//        $this->comments = $this->comments->except($id);
+    }
     public function render()
     {
         return view('livewire.comments');
