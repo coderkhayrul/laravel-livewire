@@ -2,6 +2,7 @@
     <div class="flex justify-center">
         <div class="w-6/12">
             <h1 class="my-10 text-3xl">Comments</h1>
+            @error('newComment') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
             <form class="my-4 flex" wire:submit.prevent="addComment">
                 <input wire:model.lazy="newComment" type="text" class="w-full rounded border shadow p-2 mr-2 my-2" placeholder="What's in you mind ?">
                 <div class="py-2">
@@ -13,6 +14,7 @@
                 <div class="flex justify-start my-2">
                     <p class="font-bold text-lg">{{ $comment->creator->name }}</p>
                     <p class="text-gray-500 text-sm ml-2">{{ $comment->created_at->diffForHumans() }}</p>
+                    <button class="ml-5 shadow p-1 bg-red-600 text-white rounded">Delete</button>
                 </div>
                 <p class="text-gray-600">{{ $comment->body }}</p>
             </div>

@@ -19,10 +19,15 @@ class Comments extends Component
     }
 
     public  function addComment(){
+
+        $this->validate([
+            'newComment' => 'required|min:3',
+        ],
+        [
+            'newComment.required' => 'Comment is required',
+            'newComment.min' => 'Comment must be at least 3 characters'
+        ]);
         $newComment = $this->newComment;
-        if($newComment == ''){
-            return;
-        }
         $createdComment = Comment::create([
             'body' => $newComment,
             'user_id' => 1,
