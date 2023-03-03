@@ -18,15 +18,29 @@ class Comments extends Component
         $this->comments = $newcomments;
     }
 
-    public  function addComment(){
-
-        $this->validate([
-            'newComment' => 'required|min:3',
+    public function updated($property)
+    {
+        $this->validateOnly($property, [
+            'newComment' => 'required|min:3|max:255',
         ],
         [
             'newComment.required' => 'Comment is required',
-            'newComment.min' => 'Comment must be at least 3 characters'
+            'newComment.min' => 'Comment must be at least 3 characters',
+            'newComment.max' => 'Comment must be at maximum 255 characters'
         ]);
+    }
+
+    public  function addComment(){
+
+        $this->validate([
+            'newComment' => 'required|min:3|max:255',
+        ],
+        [
+            'newComment.required' => 'Comment is required',
+            'newComment.min' => 'Comment must be at least 3 characters',
+            'newComment.max' => 'Comment must be at maximum 255 characters'
+        ]);
+
         $newComment = $this->newComment;
         $createdComment = Comment::create([
             'body' => $newComment,

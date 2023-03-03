@@ -2,7 +2,7 @@
     <div class="flex justify-center">
         <div class="w-6/12">
             <h1 class="my-10 text-3xl">Comments</h1>
-            @error('newComment') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+            @error('newComment') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
             <form class="my-4 flex" wire:submit.prevent="addComment">
                 <input wire:model.lazy="newComment" type="text" class="w-full rounded border shadow p-2 mr-2 my-2" placeholder="What's in you mind ?">
                 <div class="py-2">
