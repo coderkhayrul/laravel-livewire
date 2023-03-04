@@ -8,7 +8,13 @@
             @endif
             <h1 class="my-10 text-3xl">Comments</h1>
             @error('newComment') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
-            <form class="my-4 flex" wire:submit.prevent="addComment">
+                <section>
+                    @if($image)
+                        <img style="width: 100px;" class="rounded mb-3" src="{{ $image }}" alt="">
+                    @endif
+                    <input id="image" type="file" name="image" class="border shadow w-10/12 p-2" wire:change="$emit('fileChoosing')">
+                </section>
+                <form class="my-4 flex" wire:submit.prevent="addComment">
                 <input wire:model.lazy="newComment" type="text" class="w-full rounded border shadow p-2 mr-2 my-2" placeholder="What's in you mind ?">
                 <div class="py-2">
                     <button class="p-2 bg-blue-600 w-20 rounded shadow text-white" type="submit">Add</button>
@@ -30,3 +36,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    Livewire.on('fileChoosing', () => {
+        let inputFile = document.getElementById('image');
+        let file = inputFile.files[0]
+        let reader = new FileReader();
+        reader.onloadend = () => {
+            Livewire.emit('fileUpload', reader.result);
+        }
+        reader.readAsDataURL(file);
+
+    })
+</script>
