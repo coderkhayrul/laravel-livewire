@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\SupportTicket;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
          User::factory(5)->create();
+         SupportTicket::factory(2)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
