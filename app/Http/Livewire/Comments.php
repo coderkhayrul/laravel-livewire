@@ -6,12 +6,15 @@ use App\Models\Comment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Comments extends Component
 {
+    use WithPagination;
     use WithFileUploads;
     public $newComment;
     public $image;
@@ -19,9 +22,9 @@ class Comments extends Component
     public function handelFileUpload($imageData){
         $this->image = $imageData;
     }
-    public function updated($property)
+    public function updated($data)
     {
-        $this->validateOnly($property, [
+        $this->validateOnly($data, [
             'newComment' => 'required|min:3|max:255',
         ],
         [
@@ -43,12 +46,26 @@ class Comments extends Component
         ]);
 
         $newComment = $this->newComment;
+        // STORE IMAGE
+        $image = $this->storeImage();
         $createdComment = Comment::create([
             'body' => $newComment,
+            'image' => $image,
             'user_id' => User::inRandomOrder()->first()->id
         ]);
         $this->newComment = '';
+        $this->image = '';
         session()->flash('message', 'Comment successfully added.');
+    }
+    public function storeImage(){
+        if (!$this->image)
+        {
+            return null;
+        }
+        $imageName = uniqid();
+        $img = Image::make($this->image)->encode('jpg')->save('image/'.$imageName.'.jpg');
+//        >save('media/setting/' . $image_name);
+//        Storage::put('public/image.jpg', $img);
     }
     public function removeComment($id){
         $comment = Comment::find($id);
@@ -57,7 +74,6 @@ class Comments extends Component
 //        $this->comments = $this->comments->except($id);
         session()->flash('message', 'Comment successfully Delete.');
     }
-    use WithPagination;
     public function render()
     {
         return view('livewire.comments',[
